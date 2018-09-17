@@ -20,7 +20,7 @@ while true; do
     echo "NOTE: for papers older than April 1 2007 type \"older\"." 
     echo -ne "To exit arXivGet type \"quit\".\n\n"
     echo "  Please insert paper's arXiv ID or other option and press enter: "
-    read paperID
+    read -e paperID
     # turn input to lowercase for simplicity
     paperID="$(tr '[:upper:]' '[:lower:]' <<< "$paperID")"
     # Check if user wants to exit the program:
@@ -32,11 +32,11 @@ while true; do
     if [ $paperID = "o" -o $paperID = "old" -o $paperID = "older" ]; then
         echo -ne "\n\nVersion using old identifier.\n"
         echo "  Please give archive and subject class (e.g. hep-th, astro-ph, math, econ etc): "
-        read oldasc
+        read -e oldasc
         # turn input to lowercase for simplicity
         oldasc="$(tr '[:upper:]' '[:lower:]' <<< "$oldasc")"
         echo -ne "\n  Please give numerical identifier: \n"
-        read oldnum
+        read -e oldnum
         # turn input to lowercase for simplicity
         oldnum="$(tr '[:upper:]' '[:lower:]' <<< "$oldnum")"
         paperID="$oldasc/$oldnum"
@@ -45,7 +45,7 @@ while true; do
     # Autocorrect that but only for versions after April 1 2007:
     if [[ $paperID != *"."* && $paperID != *"/"* ]]; then 
         echo "Do you mean ${paperID:0:4}.${paperID:4} [Y/n]?"
-        read adddot
+        read -e adddot
         # turn input to lowercase for simplicity
         adddot="$(tr '[:upper:]' '[:lower:]' <<< "$adddot")"
         # set default option for dot autocorrection if there is no user input
@@ -65,7 +65,7 @@ while true; do
     mkdir -p ~/$arXivGetDir/$paperDIR
     cd ~/$arXivGetDir/$paperDIR
     echo "Download pdf [p] (default), source [s] or both [b]? " 
-    read downloadopt
+    read -e downloadopt
     # turn input to lowercase for simplicity
     downloadopt="$(tr '[:upper:]' '[:lower:]' <<< "$downloadopt")"
     # set default download option if there is no user input
