@@ -73,12 +73,12 @@ while true; do
     if [ $downloadopt = "p" -o $downloadopt = "pdf" ]; then
         clear
         echo "Downloading pdf... "
-        wget --user-agent=Mozilla/1.2 https://arxiv.org/pdf/"$paperID".pdf
+        wget --user-agent=Mozilla/5.0 https://arxiv.org/pdf/"$paperID".pdf
         wait $(jobs -p)
     elif [ $downloadopt = "s" -o $downloadopt = "src" -o $downloadopt = "source" ]; then
         clear
         echo "Downloading source... "
-    	wget --user-agent=Mozilla/1.2 https://arxiv.org/src/"$paperID"
+    	wget --user-agent=Mozilla/5.0 https://arxiv.org/src/"$paperID"
     	wait $(jobs -p)
         # Note that gunzip is performed automatically with mozilla, 
         # and that received file has no extension (in most cases).
@@ -88,9 +88,9 @@ while true; do
     elif [ $downloadopt = "b" -o $downloadopt = "both" ]; then
         clear
         echo "Downloading pdf... "
-        wget --user-agent=Mozilla/1.2 https://arxiv.org/pdf/"$paperID".pdf
+        wget --user-agent=Mozilla/5.0 https://arxiv.org/pdf/"$paperID".pdf
         echo "Downloading source... "
-    	wget --user-agent=Mozilla/1.2 https://arxiv.org/src/"$paperID"
+    	wget --user-agent=Mozilla/5.0 https://arxiv.org/src/"$paperID"
     	wait $(jobs -p)
         mv "$paperNAME" "$paperNAME".tar
         tar -xvf "$paperNAME".tar
