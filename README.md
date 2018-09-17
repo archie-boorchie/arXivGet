@@ -8,7 +8,7 @@ and it will download the pdf file and/or source
 on a folder named after the paper's arXiv ID.
 
 ## Use and prerequisites
-`arXivGet` is configured to work in Linux echosystems. 
+arXivGet is configured to work in Linux echosystems. 
 It is a minimal command line download utility 
 for [arXiv](https://arxiv.org). 
 

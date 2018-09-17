@@ -21,18 +21,24 @@ while true; do
     echo -ne "To exit arXivGet type \"quit\".\n\n"
     echo "  Please insert paper's arXiv ID or other option and press enter: "
     read paperID
+    # turn input to lowercase for simplicity
+    paperID="$(tr '[:upper:]' '[:lower:]' <<< "$paperID")"
     # Check if user wants to exit the program:
-    if [ $paperID = "q" -o $paperID = "quit" -o $paperID = "Q" -o $paperID = "QUIT" ]; then
+    if [ $paperID = "q" -o $paperID = "quit" ]; then
         break
     fi
     # Check if user wants to get a paper older than April 1 2007 (identifier is different in this case). 
     # Please visit https://arxiv.org/help/arxiv_identifier for more details. 
-    if [ $paperID = "o" -o $paperID = "older" -o $paperID = "O" -o $paperID = "OLDER" -o $paperID = "old" -o $paperID = "OLD" ]; then
+    if [ $paperID = "o" -o $paperID = "old" -o $paperID = "older" ]; then
         echo -ne "\n\nVersion using old identifier.\n"
         echo "  Please give archive and subject class (e.g. hep-th, astro-ph, math, econ etc): "
         read oldasc
+        # turn input to lowercase for simplicity
+        oldasc="$(tr '[:upper:]' '[:lower:]' <<< "$oldasc")"
         echo -ne "\n  Please give numerical identifier: \n"
         read oldnum
+        # turn input to lowercase for simplicity
+        oldnum="$(tr '[:upper:]' '[:lower:]' <<< "$oldnum")"
         paperID="$oldasc/$oldnum"
     fi
     # Sometimes . character is ommited by user in paper's ID. 
@@ -40,9 +46,11 @@ while true; do
     if [[ $paperID != *"."* && $paperID != *"/"* ]]; then 
         echo "Do you mean ${paperID:0:4}.${paperID:4} [Y/n]?"
         read adddot
-        # set default option for dot autocorrection
+        # turn input to lowercase for simplicity
+        adddot="$(tr '[:upper:]' '[:lower:]' <<< "$adddot")"
+        # set default option for dot autocorrection if there is no user input
         adddot=${adddot:-$adddotdef}
-        if [ $adddot = "y" -o $adddot = "Y" -o $adddot = "yes" -o $adddot = "YES" ]; then
+        if [ $adddot = "y" -o $adddot = "yes" ]; then
             paperID="${paperID:0:4}.${paperID:4}"
         fi
     fi
@@ -58,14 +66,16 @@ while true; do
     cd ~/$arXivGetDir/$paperDIR
     echo "Download pdf [p] (default), source [s] or both [b]? " 
     read downloadopt
-    # set default download option
+    # turn input to lowercase for simplicity
+    downloadopt="$(tr '[:upper:]' '[:lower:]' <<< "$downloadopt")"
+    # set default download option if there is no user input
     downloadopt=${downloadopt:-$downloadoptdef}
-    if [ $downloadopt = "p" -o $downloadopt = "P" -o $downloadopt = "pdf" -o $downloadopt = "PDF" ]; then
+    if [ $downloadopt = "p" -o $downloadopt = "pdf" ]; then
         clear
         echo "Downloading pdf... "
         wget --user-agent=Mozilla/1.2 https://arxiv.org/pdf/"$paperID".pdf
         wait $(jobs -p)
-    elif [ $downloadopt = "s" -o $downloadopt = "S" -o $downloadopt = "SRC" -o $downloadopt = "src" -o $downloadopt = "source" -o $downloadopt = "SOURCE" ]; then
+    elif [ $downloadopt = "s" -o $downloadopt = "src" -o $downloadopt = "source" ]; then
         clear
         echo "Downloading source... "
     	wget --user-agent=Mozilla/1.2 https://arxiv.org/src/"$paperID"
@@ -75,7 +85,7 @@ while true; do
         # Just rename received file to .tar extension to avoid extra trouble. 
         mv "$paperNAME" "$paperNAME".tar
         tar -xvf "$paperNAME".tar
-    elif [ $downloadopt = "b" -o $downloadopt = "B" -o $downloadopt = "both" -o $downloadopt = "BOTH" ]; then
+    elif [ $downloadopt = "b" -o $downloadopt = "both" ]; then
         clear
         echo "Downloading pdf... "
         wget --user-agent=Mozilla/1.2 https://arxiv.org/pdf/"$paperID".pdf
